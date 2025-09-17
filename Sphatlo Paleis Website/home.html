@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sphatlo Paleis Home</title>
+
+  <!--
+    Inline styles for the small demo page.
+    For larger projects, move these rules to a separate CSS file (e.g., css/styles.css).
+  -->
+  <style>
+    /* ===================================================================
+       GLOBAL / RESET
+       - page margin reset, base font and background color
+       =================================================================== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: white;
+    }
+
+    /* ===================================================================
+       HEADER
+       - top brand area containing logo and tagline
+       =================================================================== */
+    header {
+      background: red;
+      color: white;
+      text-align: center;
+      padding: 10px 5px;        /* increased padding to give header some height */
+      position: relative;       /* allow absolutely positioned avatar inside */
+      min-height: 100px;        /* ensures enough vertical space to center avatar */
+    }
+
+    /* Use a scaled logo image inside the header title */
+    header img.Logo-homepage {
+      display: block;
+      margin: 0 auto;
+      max-width: 20%;
+      height: auto;
+    }
+
+    /* Avatar image placed on the left side of the header and vertically centered */
+    header img.profile {
+      position: absolute;
+      left: 16px;               /* distance from left edge */
+      top: 50%;                 /* start at vertical center of header */
+      transform: translateY(-50%); /* truly center the image vertically */
+      width: 80px;              /* fixed size for consistent layout */
+      height: 80px;
+      object-fit: cover;        /* crop image nicely if needed */
+      border-radius: 50%;       /* circular avatar */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+
+    /* ===================================================================
+       NAVIGATION
+       - simple horizontal nav with strong contrast colors
+       =================================================================== */
+    nav {
+      background: yellow;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: red;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===================================================================
+       HERO SECTION
+       - main marketing area with a call-to-action
+       =================================================================== */
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: #fff3cd;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      color: red;
+      margin: 0 0 10px 0;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #333;
+      margin: 0 0 20px 0;
+    }
+
+    /* CTA button style */
+    .cta {
+      margin-top: 20px;
+    }
+
+    .cta a {
+      background: red;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      display: inline-block;
+    }
+
+    .cta a:hover {
+      background: darkred;
+    }
+
+    /* ===================================================================
+       FOOTER
+        - simple footer with copyright info
+       =================================================================== */
+    footer {
+      background: red;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 50%;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    PAGE HEADER
+    - contains the site logo and short tagline.
+  -->
+  <header>
+   
+    <h1>
+      <img src="images/logo.png" alt="Logo-homepage" width="30%" class="Logo-homepage">
+    </h1>
+
+    <!-- profile image is now wrapped in a link to the user profile page -->
+    <a href="userprofile.html" title="View profile">
+      <img src="images/alone silver surfer.jpeg" alt="Avatar" class="profile">
+    </a>
+
+    <p>Fresh. Bold. Local.</p>
+  </header>
+
+  <!--
+    NAVIGATION LINKS
+  -->
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="#">Contact</a>
+    <a href="#">About Us</a>
+  </nav>
+
+  <!--
+    HERO / MAIN CALL-TO-ACTION
+    - Short welcome message and a prominent button linking to the menu/order page.
+  -->
+  <section class="hero">
+    <h1>Welcome to Sphatlo Paleis</h1>
+    <p>Home of the original sphatlo. Bread, fries, palony, and more.</p>
+    <div class="cta">
+      <a href="menu.html">Order Now</a>
+    </div>
+  </section>
+
+  <!--
+    SITE FOOTER
+    - Copyright and small print.
+    - Update the year needed.
+  -->
+  <footer>
+    <p>&copy; 2025 Sphatlo Paleis. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

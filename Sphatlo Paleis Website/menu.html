@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Sphatlo Paleis Menu</title>
+
+  <!--
+    Styles
+    - Grouped and commented for each logical area (general, header, nav, menu items, popup, form).
+    - Keep CSS in <head> for this small demo. For production, move to a separate .css file.
+  -->
+  <style>
+    /* ======================================================================
+       GENERAL STYLES
+       - page-wide defaults, font, background, resets
+       ====================================================================== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: white;
+    }
+
+    /* ======================================================================
+       HEADER STYLING
+       - logo and page title
+       ====================================================================== */
+    header {
+      background: red;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    header img {
+      /* logo size limit */
+      max-width: 200px;
+    }
+
+    /* ======================================================================
+       NAVIGATION BAR
+       - simple centered nav with strong color contrast
+       ====================================================================== */
+    nav {
+      background: yellow;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: red;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* ======================================================================
+       MENU ITEMS CONTAINER
+       - constrains width and centers the menu list
+       ====================================================================== */
+    .menu-section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* ======================================================================
+       INDIVIDUAL MENU ITEM CARD
+       - card look with hover expansion and action button reveal
+       ====================================================================== */
+    .menu-item {
+      background: #fff3cd;
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, padding 0.3s ease;
+      position: relative;
+    }
+
+    .menu-item h3 {
+      margin: 0;
+      color: red;
+    }
+
+    .menu-item p {
+      margin: 5px 0;
+      color: #333;
+    }
+
+    /* Order button is hidden until the card is hovered */
+    .order-btn {
+      display: none; /* hidden until hover */
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Hover behavior for card expansion and showing order button */
+    .menu-item:hover {
+      transform: scale(1.05);
+      padding: 25px;
+    }
+
+    .menu-item:hover .order-btn {
+      display: block;
+      opacity: 1;
+    }
+
+    /* ======================================================================
+       POPUP / MODAL FOR ORDER FORM
+       - full-screen overlay and centered popup card
+       ====================================================================== */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6); /* dark overlay */
+      display: none; /* hidden until opened by JS */
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      color: red;
+    }
+
+    .popup label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .popup select,
+    .popup input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: gray;
+      margin-top: 5px;
+    }
+
+    /* Topping option styling:
+       - left side contains icon + label, right side contains checkbox
+    */
+    .topping-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+
+    .topping-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .topping-option img {
+      width: 50px;
+      height: 50px;
+      margin-right: 12px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .Larger-Checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ====================================================================
+       PAGE HEADER
+       - logo image (images/logo.png) and main title
+       - Ensure images/ exists in project folder
+       ==================================================================== -->
+  <header>
+    <img src="images/logo.png" alt="Sphatlo Paleis Logo" />
+    <h1>Menu</h1>
+  </header>
+
+  <!-- ====================================================================
+       NAVIGATION
+       - keep consistent links for site navigation
+       ==================================================================== -->
+  <nav>
+    <a href="home.html">Home</a>    
+    <a href="menu.html">Menu</a>
+    <a href="#">Contact</a>
+    <a href="about.html">About Us</a>
+  </nav>
+
+  <!-- ====================================================================
+       MENU ITEMS LIST
+       - Each .menu-item is a card with an Order button that opens the popup form.
+       - Caller for openForm passes the item name string.
+       ==================================================================== -->
+  <section class="menu-section">
+    <!-- Example menu item: KNOXMAN -->
+    <div class="menu-item">
+      <h3>KNOXMAN</h3>
+      <p>Achaaar, chips and polony</p>
+      <button class="order-btn" onclick="openForm('KNOXMAN')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>MABEBEZA</h3>
+      <p>Achaaar, chips, polony and cheese</p>
+      <button class="order-btn" onclick="openForm('MABEBEZA')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>CHEESE-GIRL</h3>
+      <p>Achaaar, chips, polony, cheese and egg</p>
+      <button class="order-btn" onclick="openForm('CHEESE-GIRL')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>Sgebie London</h3>
+      <p>Achaaar, chips, polony, cheese, egg and vianna</p>
+      <!-- NOTE: original onclick passed 'RUSSIAN' for this item; kept item text but you may want to pass the exact product name -->
+      <button class="order-btn" onclick="openForm('RUSSIAN')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>TANTALIZER</h3>
+      <p>Achaaar, chips, cheese and Russian</p>
+      <button class="order-btn" onclick="openForm('TANTALIZER')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>STRINGO</h3>
+      <p>Achaaar, chips, cheese, Russian and fish</p>
+      <button class="order-btn" onclick="openForm('STRINGO')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>MAKABAZA</h3>
+      <p>Achaaar, chips, cheese, egg, vianna and Russian</p>
+      <button class="order-btn" onclick="openForm('MAKABAZA')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>DOLLAR-PHO</h3>
+      <p>Achaaar, chips, cheese and beef-patty</p>
+      <button class="order-btn" onclick="openForm('DOLLAR-PHO')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>SPARKZINO</h3>
+      <p>Achaaar, chips, cheese, beef-patty, vianna and egg</p>
+      <button class="order-btn" onclick="openForm('SPARKZINO')">Order</button>
+    </div>
+
+    <div class="menu-item">
+      <h3>MATAUZEN</h3>
+      <p>
+        Achaaar, chips, cheese, polony, egg, vianna, Russian, beef-patty and fish
+      </p>
+      <button class="order-btn" onclick="openForm('MATAUZEN')">Order</button>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       POPUP ORDER FORM (Modal)
+       - id="orderForm" controlled by JS openForm() / closeForm()
+       - form is simple: palony select, topping checkboxes, store select
+       - NOTE: There's a duplicate Vienna block (image+checkbox) originally placed
+               above the store select. It remains here but is highlighted by comment.
+               Consider removing or renaming to avoid duplicate element ids.
+       ==================================================================== -->
+  <div class="popup" id="orderForm">
+    <div class="popup-content">
+      <!-- Title shows selected item (set dynamically) -->
+      <h2 id="itemName">Order: (none)</h2>
+
+      <!-- Simple form: no submit handler yet (native submit will reload page) -->
+      <form>
+        <!-- PALONY CHOICE -->
+        <label for="palony">Choose palony type</label>
+        <select id="palony" name="palony">
+          <option>Beef Palony</option>
+          <option>Chicken Palony</option>
+          <option>Spicy Palony</option>
+        </select>
+
+        <!-- TOPPINGS WITH ICONS -->
+        <label>Add extras</label>
+
+        <!-- Cheese topping -->
+        <div class="topping-option">
+          <div class="topping-left">
+            <img src="images/cheese.jpg" alt="Cheese" />
+            <label for="cheese">Cheese</label>
+          </div>
+          <input type="checkbox" id="cheese" class="Larger-Checkbox" value="Cheese" />
+        </div>
+
+        <!-- Egg topping -->
+        <div class="topping-option">
+          <div class="topping-left">
+            <img src="images/egg.jpeg" alt="Egg" />
+            <label for="egg">Egg</label>
+          </div>
+          <input type="checkbox" id="egg" class="Larger-Checkbox" value="Egg" />
+        </div>
+
+        <!-- Russian topping -->
+        <div class="topping-option">
+          <div class="topping-left">
+            <img src="images/russians.jpeg" alt="Russian" />
+            <label for="russian">Russian</label>
+          </div>
+          <input type="checkbox" id="russian" class="Larger-Checkbox" value="Russian" />
+        </div>
+
+        <!-- Vienna topping -->
+        <div class="topping-option">
+          <div class="topping-left">
+            <img src="images/Chicken-Viennas.jpg" alt="Vienna" />
+            <label for="vienna">Vienna</label>
+          </div>
+          <input type="checkbox" id="vienna" class="Larger-Checkbox" value="Vienna" />
+        </div>
+
+        <!-- STORE SELECT -->
+        <label for="store">Select store</label>
+
+        <!-- NOTE: The original file included a duplicated Vienna block immediately before the store select.
+             The duplicate block is preserved below as in the original, but it uses the same id 'vienna'.
+             This is not valid to have duplicate ids if you plan to use JS to read them.
+             Consider renaming / removing duplicates to avoid conflicts. -->
+  
+
+        <!-- store selector -->
+        <select id="store" name="store">
+          <option>Soweto Branch</option>
+          <option>Pretoria Branch</option>
+          <option>Johannesburg Branch</option>
+        </select>
+
+        <!-- SUBMIT & CANCEL BUTTONS
+             - Submit currently does a native submit (page reload).
+             - To handle order without reload, add event listener to form and preventDefault in JS.
+        -->
+        <button type="submit">Place Order</button>
+        <button type="button" class="close-btn" onclick="closeForm()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!--
+    JavaScript
+    - small functions to open and close the order popup
+    - keep concise; consider adding form submit handler to process data via fetch/ajax
+  -->
+  <script>
+    /**
+     * openForm(item)
+     * - shows modal popup and fills the item name title
+     * - parameter: item (string) - name of the menu item invoked
+     */
+    function openForm(item) {
+      // show popup overlay (flex used in CSS for centering)
+      document.getElementById('orderForm').style.display = 'flex';
+
+      // set dynamic heading to indicate which item is being ordered
+      document.getElementById('itemName').textContent = 'Order: ' + item;
+    }
+
+    /**
+     * closeForm()
+     * - hides the popup modal
+     * - does not clear form fields; clear them here if needed
+     */
+    function closeForm() {
+      document.getElementById('orderForm').style.display = 'none';
+    }
+
+    /* Optional improvements to add later:
+       - add form submission handler:
+           document.querySelector('#orderForm form').addEventListener('submit', function(e){ e.preventDefault(); ... });
+       - validate toppings / selected palony / store before sending
+       - avoid duplicate element ids (e.g., rename second 'vienna' to 'vienna_store' or similar)
+    */
+  </script>
+</body>
+
+</html>
